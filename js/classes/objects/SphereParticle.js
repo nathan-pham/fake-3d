@@ -4,14 +4,14 @@ export default class SphereParticle {
 
     theta = Math.random() * 2 * Math.PI
     phi = Math.acos((Math.random() * 2) - 1)
-    radius = 10
+    radius = 30
     projectedX = 0
     projectedY = 0
     projectedScale = 0
     
-    constructor({ dimensions: { width, height }, autoplay=true }={ dimensions: {} }) {
+    constructor({ dimensions: { width, height }, autoplay=true, texture }={ dimensions: {} }) {
 
-        this.globeRadius = width / 3
+        this.globeRadius = width / 7
 
         this.perspective = width * 0.8
         this.projectionCenterX = width / 2
@@ -22,6 +22,8 @@ export default class SphereParticle {
         if(autoplay) {
             this.startAnimation()        
         }
+
+        this.texture = texture
 
     }
 
@@ -53,11 +55,23 @@ export default class SphereParticle {
 
         this.project()
 
-        ctx.beginPath()
-        ctx.arc(this.projectedX, this.projectedY, this.projectedScale * this.radius, 0, 2 * Math.PI)
+        if(this.texture) {
 
-        ctx.fillStyle = `rgba(0, 0, 0, ${ Math.abs(1 - this.z / width) })`
-        ctx.fill()
+            ctx.font = `${ Math.floor(this.projectedScale * this.radius) }px serif`
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+
+            ctx.fillText(this.texture, this.projectedX, this.projectedY)
+
+        } else {
+
+            ctx.beginPath()
+            ctx.arc(this.projectedX, this.projectedY, this.projectedScale * this.radius, 0, 2 * Math.PI)
+    
+            ctx.fillStyle = `rgba(0, 0, 0, ${ Math.abs(1 - this.z / width) })`
+            ctx.fill()
+
+        }
 
     }
 

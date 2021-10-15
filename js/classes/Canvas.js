@@ -12,6 +12,7 @@ export default class Canvas {
         this.#addEventListeners()
 
         this.#createParticles()
+        
         if(autoplay) {
             this.startAnimation()
         }
@@ -29,9 +30,14 @@ export default class Canvas {
 
     #createParticles() {
 
-        for(let i = 0; i < 800; i++) {
+        const textures = [ '🦊', '🦓', '🐹', '🐨' ]
 
-            this.particles.push(new Particle({ dimensions: this.dimensions }))
+        for(let i = 0; i < 200; i++) {
+
+            this.particles.push(new Particle({ 
+                dimensions: this.dimensions,
+                texture: textures[Math.floor(Math.random() * textures.length)]
+            }))
 
         }
 
@@ -79,9 +85,12 @@ export default class Canvas {
             requestAnimationFrame(animate)
 
             this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height)
-            this.particles.forEach(particle => typeof particle.render == "function" 
-                ? particle.render(this) 
-                : console.log("[Canvas.js] no render function"))
+
+            this.particles
+                .sort((particleA, particleB) => particleA.projectedScale - particleB.projectedScale)
+                .forEach(particle => typeof particle.render == "function" 
+                    ? particle.render(this) 
+                    : console.log("[Canvas.js] no render function"))
 
         }
 
