@@ -1,6 +1,6 @@
 import gsap, { Expo } from "https://esm.sh/gsap"
 
-export default class Particle {
+export default class SquareParticle {
 
     radius = 10
     projectedX = 0

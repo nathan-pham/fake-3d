@@ -1,4 +1,4 @@
-import Particle from "./objects/Particle.js"
+import Particle from "./objects/SphereParticle.js"
 
 export default class Canvas {
 
