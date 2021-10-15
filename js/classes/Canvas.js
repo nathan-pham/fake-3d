@@ -1,10 +1,17 @@
+import Particle from "./Particle.js"
+
 export default class Canvas {
+
+    particles = []
 
     constructor({ root=document.body }={}) {
 
         this.root = typeof root == "string" ? document.querySelector(root) : root
         this.root.appendChild(this.#createCanvas())
         this.#addEventListeners()
+
+
+        this.#createParticles()
 
     }
 
@@ -17,6 +24,16 @@ export default class Canvas {
             
     }
 
+    #createParticles() {
+
+        for(let i = 0; i < 800; i++) {
+
+            this.particles.push(new Particle({ dimensions: this.dimensions }))
+
+        }
+
+    }
+
     #createCanvas() {
 
         this.canvas = document.createElement("canvas")
@@ -27,7 +44,7 @@ export default class Canvas {
 
     #addEventListeners() {
 
-        this.canvas.addEventListener("resize", () => {
+        const resize = () => {
 
             const { width, height } = this.dimensions
             const { canvas, ctx } = this
@@ -37,11 +54,14 @@ export default class Canvas {
                 canvas.height = canvas.clientHeight * 2
                 ctx.scale(2, 2)
             } else {
-                canvas.width = dimensions.width
-                canvas.height = dimensions.height
+                canvas.width = width
+                canvas.height = height
             }
 
-        })
+        }
+
+        window.addEventListener("resize", resize)
+        resize()
 
     }
 
