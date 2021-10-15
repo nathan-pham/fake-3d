@@ -1,3 +1,5 @@
+import gsap, { Expo } from "https://esm.sh/gsap"
+
 export default class Particle {
 
     radius = 10
@@ -5,7 +7,7 @@ export default class Particle {
     projectedY = 0
     projectedScale = 0
     
-    constructor({ dimensions: { width, height } }={ dimensions: {} }) {
+    constructor({ dimensions: { width, height }, autoplay=true }={ dimensions: {} }) {
 
         this.perspective = width * 0.8
         this.projectionCenterX = width / 2
@@ -14,6 +16,23 @@ export default class Particle {
         this.x = (Math.random() - 0.5) * width
         this.y = (Math.random() - 0.5) * height
         this.z = Math.random() * width
+
+        if(autoplay) {
+            this.startAnimation({ width })        
+        }
+
+    }
+
+    startAnimation({ width }={}) {
+
+        gsap.to(this, Math.random() * 10 + 15, {
+            z: width,
+            repeat: -1,
+            yoyo: true,
+            yoyoEase: true,
+            ease: Expo.easeInOut,
+            delay: Math.random() * -25
+        })
 
     }
 
