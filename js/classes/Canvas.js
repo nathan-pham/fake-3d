@@ -1,4 +1,4 @@
-import Particle from "./Particle.js"
+import Particle from "./objects/Particle.js"
 
 export default class Canvas {
 
@@ -79,7 +79,9 @@ export default class Canvas {
             requestAnimationFrame(animate)
 
             this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height)
-            this.particles.forEach(particle => particle.render(this))
+            this.particles.forEach(particle => typeof particle.render == "function" 
+                ? particle.render(this) 
+                : console.log("[Canvas.js] no render function"))
 
         }
 
