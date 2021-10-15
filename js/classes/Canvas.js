@@ -32,7 +32,7 @@ export default class Canvas {
 
         const textures = [ '🦊', '🦓', '🐹', '🐨' ]
 
-        for(let i = 0; i < 200; i++) {
+        for(let i = 0; i < 800; i++) {
 
             this.particles.push(new Particle({ 
                 dimensions: this.dimensions,

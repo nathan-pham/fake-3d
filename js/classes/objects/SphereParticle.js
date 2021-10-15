@@ -11,7 +11,7 @@ export default class SphereParticle {
     
     constructor({ dimensions: { width, height }, autoplay=true, texture }={ dimensions: {} }) {
 
-        this.globeRadius = width / 7
+        this.globeRadius = width / 4
 
         this.perspective = width * 0.8
         this.projectionCenterX = width / 2
@@ -57,9 +57,11 @@ export default class SphereParticle {
 
         if(this.texture) {
 
-            ctx.font = `${ Math.floor(this.projectedScale * this.radius) }px serif`
+            ctx.font = `${ this.radius }px serif`
             ctx.textAlign = "center"
             ctx.textBaseline = "middle"
+
+            ctx.globalAlpha = Math.abs(1 - this.z / width)
 
             ctx.fillText(this.texture, this.projectedX, this.projectedY)
 
