@@ -1,5 +1,5 @@
 import Canvas from "./classes/Canvas.js"
 
 new Canvas({
-    // textures: [ '🦊', '🦓', '🐹', '🐨' ]
+    population: 800
 })

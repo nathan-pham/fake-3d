@@ -4,13 +4,13 @@ export default class SphereParticle {
 
     theta = Math.random() * 2 * Math.PI
     phi = Math.acos((Math.random() * 2) - 1)
-    radius = 5
     projectedX = 0
     projectedY = 0
     projectedScale = 0
     
-    constructor({ dimensions: { width, height }, autoplay=true, texture }={ dimensions: {} }) {
+    constructor({ dimensions: { width, height }, autoplay=true, texture, radius=5 }={ dimensions: {} }) {
 
+        this.radius = radius
         this.globeRadius = width / 5
 
         this.perspective = width * 0.8
@@ -51,9 +51,27 @@ export default class SphereParticle {
 
     }
 
-    render({ ctx, dimensions: { width }, particles=[] }={ dimensions: {} }) {
+    render({ ctx, dimensions: { width }, particles=[], lines }={ dimensions: {} }) {
 
         this.project()
+
+        if(lines) {
+
+            for(const particle of particles) {
+            
+                if(particle !== this) {
+
+                    ctx.beginPath()
+                    ctx.moveTo(this.projectedX, this.projectedY)
+                    ctx.lineTo(particle.projectedX, particle.projectedY)
+                    ctx.strokeStyle = `rgba(0, 0, 0, 0.1)`
+                    ctx.stroke()
+
+                }
+
+            }
+
+        }
 
         if(this.texture) {
 
@@ -73,20 +91,6 @@ export default class SphereParticle {
     
             ctx.fillStyle = `rgba(0, 0, 0, ${ Math.abs(1 - this.z / width) })`
             ctx.fill()
-
-            for(const particle of particles) {
-                
-                if(particle !== this) {
-
-                    ctx.beginPath()
-                    ctx.moveTo(this.projectedX, this.projectedY)
-                    ctx.lineTo(particle.projectedX, particle.projectedY)
-                    ctx.strokeStyle = `rgba(0, 0, 0, 0.1)`
-                    ctx.stroke()
-
-                }
-
-            }
 
         }
 
