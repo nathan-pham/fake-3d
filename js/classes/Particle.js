@@ -25,7 +25,7 @@ export default class Particle {
 
     }
 
-    render({ ctx }) {
+    render({ ctx, dimensions: { width } }={ dimensions: {} }) {
 
         this.project()
 

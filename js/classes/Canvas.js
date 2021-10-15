@@ -3,15 +3,18 @@ import Particle from "./Particle.js"
 export default class Canvas {
 
     particles = []
+    animationID = null
 
-    constructor({ root=document.body }={}) {
+    constructor({ root=document.body, autoplay=true }={}) {
 
         this.root = typeof root == "string" ? document.querySelector(root) : root
         this.root.appendChild(this.#createCanvas())
         this.#addEventListeners()
 
-
         this.#createParticles()
+        if(autoplay) {
+            this.startAnimation()
+        }
 
     }
 
@@ -50,18 +53,43 @@ export default class Canvas {
             const { canvas, ctx } = this
 
             if(window.devicePixelRatio > 1) {
+
                 canvas.width = canvas.clientWidth * 2
                 canvas.height = canvas.clientHeight * 2
                 ctx.scale(2, 2)
+            
             } else {
+            
                 canvas.width = width
                 canvas.height = height
+            
             }
 
         }
 
         window.addEventListener("resize", resize)
         resize()
+
+    }
+
+    startAnimation() {
+
+        const animate = () => {
+
+            requestAnimationFrame(animate)
+
+            this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height)
+            this.particles.forEach(particle => particle.render(this))
+
+        }
+
+        animate()
+
+    }
+
+    stopAnimation() {
+
+        cancelAnimationFrame(this.animationID)
 
     }
 
