@@ -4,7 +4,7 @@ export default class SphereParticle {
 
     theta = Math.random() * 2 * Math.PI
     phi = Math.acos((Math.random() * 2) - 1)
-    radius = 30
+    radius = 5
     projectedX = 0
     projectedY = 0
     projectedScale = 0
@@ -51,7 +51,7 @@ export default class SphereParticle {
 
     }
 
-    render({ ctx, dimensions: { width } }={ dimensions: {} }) {
+    render({ ctx, dimensions: { width }, particles=[] }={ dimensions: {} }) {
 
         this.project()
 
@@ -73,6 +73,20 @@ export default class SphereParticle {
     
             ctx.fillStyle = `rgba(0, 0, 0, ${ Math.abs(1 - this.z / width) })`
             ctx.fill()
+
+            for(const particle of particles) {
+                
+                if(particle !== this) {
+
+                    ctx.beginPath()
+                    ctx.moveTo(this.projectedX, this.projectedY)
+                    ctx.lineTo(particle.projectedX, particle.projectedY)
+                    ctx.strokeStyle = `rgba(0, 0, 0, 0.1)`
+                    ctx.stroke()
+
+                }
+
+            }
 
         }
 

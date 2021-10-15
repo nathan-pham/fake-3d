@@ -5,13 +5,13 @@ export default class Canvas {
     particles = []
     animationID = null
 
-    constructor({ root=document.body, autoplay=true }={}) {
+    constructor({ root=document.body, autoplay=true, textures=[] }={}) {
 
         this.root = typeof root == "string" ? document.querySelector(root) : root
         this.root.appendChild(this.#createCanvas())
         this.#addEventListeners()
 
-        this.#createParticles()
+        this.#createParticles(textures)
         
         if(autoplay) {
             this.startAnimation()
@@ -28,11 +28,9 @@ export default class Canvas {
             
     }
 
-    #createParticles() {
+    #createParticles(textures) {
 
-        const textures = [ '🦊', '🦓', '🐹', '🐨' ]
-
-        for(let i = 0; i < 800; i++) {
+        for(let i = 0; i < 10; i++) {
 
             this.particles.push(new Particle({ 
                 dimensions: this.dimensions,
@@ -87,7 +85,7 @@ export default class Canvas {
             this.ctx.clearRect(0, 0, this.dimensions.width, this.dimensions.height)
 
             this.particles
-                .sort((particleA, particleB) => particleA.projectedScale - particleB.projectedScale)
+                // .sort((particleA, particleB) => particleA.projectedScale - particleB.projectedScale)
                 .forEach(particle => typeof particle.render == "function" 
                     ? particle.render(this) 
                     : console.log("[Canvas.js] no render function"))
